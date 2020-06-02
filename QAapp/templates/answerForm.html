@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+  {% if not answered %}
+    <div class = "container mt-4">
+      <input class="form-control mb-3 font-weight-bold" type="text" placeholder='{{ question_name }}'
+      readonly>
+      <form method="post" class="form-group">
+        {% csrf_token %}
+        {{ renderForm.errors }}
+        {{ renderForm.answer|attr:"class:form-control mt-4"}}
+
+        <br>
+        <button class="btn btn-outline-success my-2 my-sm-0 mt-2" type="submit">Submit Answer </button>
+      </form>
+    </div>
+  {% else %}
+    <div class="alert alert-success" role=".alert">
+      <center><strong>Answered successfully</center></strong>
+    </div>
+    <script>
+      function redirect(){
+        window.location.href = "{% url 'home' %}";
+      }
+      setTimeout(redirect, 2000); //2000 is equivalent to 2 seconds
+    </script>
+  {% endif %}
+  
+{% endblock %}

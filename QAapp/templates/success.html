@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="alert alert-success" role="alert">
+    <h4><center><strong>{{ user_obj }}</center></strong></h4>
+  </div>
+  <script>
+    function redirect(){
+       window.location.href = "{% url 'home' %}";
+    }
+
+    setTimeout(redirect, 5000); //5000 is equivalent to 5 seconds
+  </script>
+{% endblock %}

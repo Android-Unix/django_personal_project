@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="alert alert-danger" role=".alert">
+    <center><strong>Deletion Successful</center></strong>
+  </div>
+  <script>
+    function redirect(){
+       window.location.href = "{% url 'home' %}";
+    }
+
+    setTimeout(redirect, 2000); //2000 is equivalent to 2 seconds
+  </script>
+{% endblock %}

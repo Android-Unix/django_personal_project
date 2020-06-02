@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block buttons %}
+  {% if user.is_authenticated %}
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+      <button class="btn btn-danger my-2 my-sm-0 mr-2 ml-auto" onclick = "btnLogoutClicked()">Logout</button>
+  </div>
+  {% else %}
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+        <button class="btn btn-primary my-2 my-sm-0 mr-2 ml-auto" onclick = "btnSignUpClicked()">SignUP</button>
+        <button class="btn btn-secondary my-2 my-sm-0 mr-4" onclick = "btnSignInClicked()">Sign In</button>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    <div class = "container mt-4">
+      <h1 class="mt-4 mb-4">Welcome {{ user.first_name }}</h1>
+      {% if user.is_staff %}
+        <button class="btn btn-outline-success mb-4 mr-2 ml-auto" onclick = "listAllStudents('{{ user_uuid }}')">List All Students</button>
+        <button class="btn btn-outline-warning mb-4 mr-2 ml-auto" onclick = "btnAddQuestion()">Add Question</button>
+        {% for question in page_obj %}
+          <li class="list-group-item list-group-item-info">
+            <h5 class="font-weight-bold mb-2">Question:</h5> {{ question.question }} <h5 class="font-weight-bold mt-2"> Marks:</h5>{{ question.marks }}
+            <div class = container-ml-4>
+              <button class="btn btn-warning mt-2 mr-2 ml-auto" onclick="updateQuestion('{{ question.pk }}')">Update</button>
+              <button class="btn btn-danger mt-2 mr-2 ml-auto" onclick="deleteQuestion('{{ question.pk }}')">Delete</button>
+            </div>
+          </li>
+        {% endfor %}
+      {% else %}
+      {% if number_of_questions == 0 %}
+        <h5 class="alert alert-success mt-4 mb-4"><center>No Questions Posted...Enjoy!</center></h5>
+      {% else %}
+        <h5 class="alert alert-dark mt-4 mb-4"><center>List of questions to be answered!</center></h5>
+      {% endif %}
+      {% for question in page_obj %}
+        <li class="list-group-item list-group-item-action list-group-item-info cursor-pointer" onclick="questionClicked('{{ question.pk }}')">
+          <div class = "container" >
+            <h5 class="font-weight-bold">{{ question.question }}</h5>
+          </div>
+          <div class = "container mb-2">
+            <h6> Marks : {{ question.marks }} </h6>
+          </div>
+        </li>
+      {% endfor %}
+    {% endif %}
+    {% if number_of_questions != 0 %}
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mt-4">
+
+          <li class="page-item">
+            {% if page_obj.has_previous %}
+              <a class="page-link" href="?page=1">&laquo; first</a>
+            {% endif %}
+          </li>
+
+          <li class="page-item">
+            {% if page_obj.has_previous %}
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+          </li>
+
+          <li class="page-item">
+            <a class="btn btn-info" href="#">
+              Page {{ page_obj.number }}
+            </a>
+          </li>
+          
+          <li class="page-item">
+            {% if page_obj.has_next %}
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+          </li>
+
+          <li class="page-item">
+            {% if page_obj.has_next %}
+              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+          </li>
+        </ul>
+      </nav>
+    {% endif %}    
+  </div>
+  {% else %}
+    <div class = "container">
+      <h2> HomePage Content</h2>
+    </div>
+  {% endif %}
+{% endblock %}
+
+
+
+{% block scripts %}
+<script type = "text/javascript" >
+  function btnSignUpClicked(){
+    location.href = "{% url 'signup' %}";
+  }
+
+  function btnSignInClicked(){
+    location.href = "{% url 'login' %}";
+  }
+
+  function btnLogoutClicked(){
+    location.href = "{% url 'logout' %}"
+  }
+
+  function btnAddQuestion(){
+    location.href = "{% url 'addQuestion' %}"
+  }
+
+  function updateQuestion(pk){
+    console.log(pk);
+    location.href  = "update/" + pk + "/";
+  }
+
+  function deleteQuestion(pk){
+    console.log(pk);
+    location.href  = "delete/" + pk + "/";
+  }
+
+  function questionClicked(question_id){
+    location.href = "answer/" + question_id + "/";
+  }
+
+  function listAllStudents(lecturer_id){
+    console.log(lecturer_id +"/students/");
+    location.href = lecturer_id +"/students/";
+  }
+
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+  .cursor-pointer{
+    cursor: pointer;
+  }
+
+  .btn-outline-warning{
+    color: #000;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="alert alert-warning" role="alert">
+  <h4 class="alert-heading"><center>Sign Up</center></h4>
+</div>
+
+<form method="post" class="needs-validation" novalidate>
+  {% csrf_token %}
+  {% if generateForm.errors %}
+  <div class="alert alert-danger font-weight-bold" role=".alert">
+    {{ generateForm.errors }}
+  </div>
+  {% endif %}
+  <div class="form-row">
+    <div class="col-md-4 mb-2 mt-4">
+      <label for="validationCustom01" class="font-weight-bold">First name</label>
+        {{ generateForm.first_name|attr:"class:form-control needs-validation" }}
+      <div class="invalid-feedback">
+          Enter a valid FirstName
+      </div>
+    </div>
+    <div class="col-md-4 mb-2 mt-4">
+      <label for="validationServer02" class="font-weight-bold">Last name</label>
+        {{ generateForm.last_name|attr:"class:form-control needs-validation" }}
+      <div class="invalid-feedback">
+        Enter a valid LastName
+      </div>
+    </div>
+    <div class="col-md-4 mb-2 mt-4">
+      <label for="validationServerUsername" class="font-weight-bold">Username</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupPrepend3">@</span>
+        </div>
+          {{ generateForm.username|attr:"class:form-control needs-validation" }}
+        <div class="invalid-feedback">
+          Please choose a username.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-12 mb-2 mt-2">
+      <label for="validationServer03" class="font-weight-bold">Email</label>
+        {{ generateForm.email|attr:"class:form-control needs-validation" }}
+      <div class="invalid-feedback">
+        Enter a valid Email!
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-12 mb-2 mt-2">
+      <label for="validationServer03" class="font-weight-bold">Date of Birth</label>
+      <div class='input-group date' id='datetimepicker10'>
+        {{ generateForm.dob|attr:"class:form-control needs-validation" }}
+      </div>
+      <div class="invalid-feedback">
+        Format: YYYY-MM-DD
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-2 mt-2">
+      <label for="validationServer03" class="font-weight-bold">Password</label>
+        {{ generateForm.password1|attr:"class:form-control needs-validation" }}
+      <div class="invalid-feedback">
+        Password cannot be empty
+      </div>
+    </div>
+    <div class="col-md-6 mb-2 mt-2">
+      <label for="validationServer03" class="font-weight-bold">ConfirmPassword</label>
+        {{ generateForm.password2|attr:"class:form-control needs-validation" }}
+      <div class="invalid-feedback">
+        Password cannot be empty
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary mt-4" type="submit">Submit form</button>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+{% endblock %}
